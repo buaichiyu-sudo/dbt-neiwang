@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["version", "models"],
+  "properties": {
+    "version": {"type": "integer"},
+    "models": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "description", "metrics"],
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "description", "type"],
+              "properties": {
+                "name": {"type": "string"},
+                "description": {"type": "string"},
+                "type": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

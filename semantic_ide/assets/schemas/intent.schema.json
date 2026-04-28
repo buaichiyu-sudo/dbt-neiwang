@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["intent_summary", "metrics", "dimensions", "time_grain", "complexity", "risk_flags", "recommended_layer", "reasoning_brief"],
+  "properties": {
+    "intent_summary": {"type": "string"},
+    "metrics": {"type": "array", "items": {"type": "string"}},
+    "dimensions": {"type": "array", "items": {"type": "string"}},
+    "time_grain": {"type": "string"},
+    "complexity": {"type": "string", "enum": ["Low", "Medium", "High"]},
+    "risk_flags": {"type": "array", "items": {"type": "string"}},
+    "recommended_layer": {"type": "string", "enum": ["ADS", "DWS", "DWD"]},
+    "reasoning_brief": {"type": "string"}
+  }
+}
