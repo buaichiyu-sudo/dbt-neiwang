@@ -2,6 +2,7 @@ from sqlglot import parse_one, exp
 
 from core.errors import E_AST_NO_DT
 from core.models import ValidationResult
+from core.pipeline.dbt_sql_renderer import render_dbt_sql
 
 
 def _where_contains_required(where_node: exp.Where | None, required_cols: list[str]) -> bool:
@@ -19,7 +20,7 @@ def enforce_partition_filter(sql: str, required_cols: list[str] | None = None) -
     """
     required_cols = required_cols or ["dt"]
     try:
-        ast = parse_one(sql)
+        ast = parse_one(render_dbt_sql(sql))
     except Exception as exc:
         return ValidationResult(ok=False, error_code=E_AST_NO_DT, message=f"SQL 解析失败: {exc}")
 
