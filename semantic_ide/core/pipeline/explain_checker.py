@@ -1,6 +1,7 @@
 from core.config import Settings
 from core.errors import E_EXPLAIN_FAIL
 from core.models import ValidationResult
+from core.pipeline.dbt_sql_renderer import render_dbt_sql_for_validation
 
 
 def run_explain(sql: str, settings: Settings) -> ValidationResult:
@@ -15,6 +16,8 @@ def run_explain(sql: str, settings: Settings) -> ValidationResult:
     if not (settings.doris_host and settings.doris_user and settings.doris_database):
         return ValidationResult(ok=False, error_code=E_EXPLAIN_FAIL, message="缺少 Doris 连接配置")
 
+    explain_sql = render_dbt_sql_for_validation(sql)
+
     try:
         conn = pymysql.connect(
             host=settings.doris_host,
@@ -27,7 +30,7 @@ def run_explain(sql: str, settings: Settings) -> ValidationResult:
             write_timeout=20,
         )
         with conn.cursor() as cur:
-            cur.execute(f"EXPLAIN {sql}")
+            cur.execute(f"EXPLAIN {explain_sql}")
             rows = cur.fetchall()
         conn.close()
         return ValidationResult(ok=True, message=f"EXPLAIN 校验通过, rows={len(rows)}")

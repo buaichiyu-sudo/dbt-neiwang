@@ -23,3 +23,13 @@ def test_guardrail_fail_subquery_without_dt():
     """
     result = enforce_partition_filter(sql)
     assert not result.ok
+
+
+def test_guardrail_pass_with_dbt_ref_macro():
+    sql = """
+    select *
+    from {{ ref('dws_charge_order_di') }}
+    where dt='2026-04-28'
+    """
+    result = enforce_partition_filter(sql)
+    assert result.ok
